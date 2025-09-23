@@ -1,0 +1,6 @@
+Finish organising Source folder.
+Switch to newer haxe and newer libs.
+Improve and rewrite engine code.
+Add HScript support.
+Remove Lua stuff.
+Remove Old Android Port Stuff.
