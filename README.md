@@ -1,5 +1,5 @@
 ## FNF': Rebound Engine
-- Rebound Engine is a Friday Night Funkin' rewrite and maybe successor of SB Engine and uses Week 7 source code, adding new cool features to the game.
+- Rebound Engine is a Friday Night Funkin' rewrite and successor of SB Engine by Stefan2008/Play Engine by MaysLastPlay and uses Week 7 source code, adding new cool features to the game.
 # WARNING!!!
 - Rebound Engine on very early development state!
 - Currently you can't do anything for now
