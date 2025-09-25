@@ -1,8 +1,8 @@
-## FNF Rebound Engine
-- Rebound Engine is a Friday Night Funkin' rewrite and maybe sucessor of my old Psych Engine fork called SB Engine and this engine is made from ground up (in short i used week 6 source code or you call this: engine from scratch) which adds new cool features to the game.
+## FNF': Rebound Engine
+- Rebound Engine is a Friday Night Funkin' rewrite and maybe sucessor of SB Engine and this engine is made from ground up (in short week 7 source code is used or you call this: engine from scratch) which adds new cool features to the game.
 # WARNING!!!
 - Rebound Engine on very early development state!
-- Currently you can't do nothing for now
+- Currently you can't do anything for now
 
 ## Credits / shoutouts to OG FNF Team
 
