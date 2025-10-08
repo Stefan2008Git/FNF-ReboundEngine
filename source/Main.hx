@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxGame;
 import flixel.FlxState;
+import lime.graphics.Image;
 import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
@@ -76,5 +77,10 @@ class Main extends Sprite
 
 		fpsCounter = new FPSCounter(10, 3, 0xFFFFFF);
 		addChild(fpsCounter);
+
+		#if linux
+		var icon = Image.fromFile("icon.png");
+		Lib.current.stage.window.setIcon(icon);
+		#end
 	}
 }
