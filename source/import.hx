@@ -29,6 +29,7 @@ import funkin.data.characters.*;
 // Others
 import funkin.backend.*;
 import funkin.backend.objects.*;
+import funkin.backend.framerate.*;
 
 // Shaders
 import funkin.data.shaders.*;
