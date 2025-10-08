@@ -184,7 +184,7 @@ class MainMenuState extends MusicBeatState
 
 		if (controls.BACK && menuItems.enabled && !menuItems.busy)
 		{
-			FlxG.switchState(new TitleState());
+			FlxG.switchState(() -> new TitleState());
 		}
 
 		super.update(elapsed);

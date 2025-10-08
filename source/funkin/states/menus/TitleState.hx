@@ -2,7 +2,6 @@ package funkin.states.menus;
 
 import openfl.display.Sprite;
 import openfl.net.NetStream;
-import ui.PreferencesMenu; 
 #if sys 
 import sys.thread.Thread; 
 #end 
@@ -56,22 +55,12 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		FlxG.game.focusLostFramerate = 60;
-
 		swagShader = new ColorSwap();
 		alphaShader = new BuildingShaders();
-
-		FlxG.sound.muteKeys = [ZERO];
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
 		super.create();
-
-		FlxG.save.bind('funkin', 'ninjamuffin99');
-
-		PreferencesMenu.initPrefs();
-		PlayerSettings.init();
-		Highscore.load();
 
 			/*trace('checking for update');
 			var http = new haxe.Http("https://raw.githubusercontent.com/MaysLastPlay10/FNF-PlayEngine/main/gitVersion.txt");
@@ -93,37 +82,15 @@ class TitleState extends MusicBeatState
 
 			http.request();*/
 
-		if (FlxG.save.data.weekUnlocked != null)
-		{
-			// FIX LATER!!!
-			// WEEK UNLOCK PROGRESSION!!
-			// StoryMenuState.weekUnlocked = FlxG.save.data.weekUnlocked;
-
-			if (StoryMenuState.weekUnlocked.length < 4)
-				StoryMenuState.weekUnlocked.insert(0, true);
-
-			// QUICK PATCH OOPS!
-			if (!StoryMenuState.weekUnlocked[0])
-				StoryMenuState.weekUnlocked[0] = true;
-		}
-
 		#if FREEPLAY
-		FlxG.switchState(new FreeplayState());
+		FlxG.switchState(() -> new FreeplayState());
 		#elseif CHARTING
-		FlxG.switchState(new ChartingState());
+		FlxG.switchState(() -> new ChartingState());
 		#else
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
 			startIntro();
 		});
-		#end
-
-		#if DISCORD_ALLOWED
-		DiscordClient.initialize();
-		
-		Application.current.onExit.add (function (exitCode) {
-			DiscordClient.shutdown();
-		 });
 		#end
 	}
 
@@ -267,11 +234,6 @@ class TitleState extends MusicBeatState
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
 
-		if (FlxG.keys.justPressed.F)
-		{
-			FlxG.fullscreen = !FlxG.fullscreen;
-		}
-
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 
 		#if mobile
@@ -324,7 +286,7 @@ class TitleState extends MusicBeatState
 			if (!OutdatedSubState.leftState)
 			{
 				// TODO: Make a check here or delete this since no NGAPI
-				FlxG.switchState(new MainMenuState());
+				FlxG.switchState(() -> new MainMenuState());
 			}
 
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);

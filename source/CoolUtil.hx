@@ -45,4 +45,20 @@ class CoolUtil
 	{
 		return a + camLerpShit(ratio) * (b - a);
 	}
+
+	inline public static function showPopUp(message:String, title:String #if sl_windows_api, ?icon:MessageBoxIcon, ?type:MessageBoxType #end, showScrollableMSG:Bool = false):Void
+	{
+		#if android
+		AndroidTools.showAlertDialog(title, message, {name: "OK", func: null}, null);
+		#elseif linux
+		Sys.command("zenity", ["--info", "--title=" + title, "--text=" + message]);
+		#elseif sl_windows_api
+		if (showScrollableMSG)
+			WindowsAPI.showScrollableMessage(message, title);
+		else
+			WindowsAPI.showMessageBox(message, title, icon, type);
+		#else
+		lime.app.Application.current.window.alert(message, title);
+		#end
+	}
 }

@@ -1511,7 +1511,7 @@ class PlayState extends MusicBeatState
 			if (FlxG.random.bool(0.1))
 			{
 				// gitaroo man easter egg
-				FlxG.switchState(new GitarooPause());
+				FlxG.switchState(() -> new GitarooPause());
 			}
 			else
 			{
@@ -1528,7 +1528,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			FlxG.switchState(new ChartingState());
+			FlxG.switchState(() -> new ChartingState());
 
 			#if DISCORD_ALLOWED
 			DiscordClient.changePresence("Chart Editor", null, null, true);
@@ -1563,11 +1563,11 @@ class PlayState extends MusicBeatState
 			iconP2.animation.curAnim.curFrame = 0;
 
 		/* if (FlxG.keys.justPressed.NINE)
-			FlxG.switchState(new Charting()); */
+			FlxG.switchState(() -> new Charting()); */
 
 		#if debug
 		if (FlxG.keys.justPressed.EIGHT)
-			FlxG.switchState(new AnimationDebug(SONG.player2));
+			FlxG.switchState(() -> new AnimationDebug(SONG.player2));
 		#end
 
 		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
@@ -1605,7 +1605,7 @@ class PlayState extends MusicBeatState
 					gfSpeed = 1;
 					// case 163:
 					// FlxG.sound.music.stop();
-					// FlxG.switchState(new TitleState());
+					// FlxG.switchState(() -> new TitleState());
 			}
 		}
 
@@ -1616,7 +1616,7 @@ class PlayState extends MusicBeatState
 				case 128, 129, 130:
 					vocals.volume = 0;
 					// FlxG.sound.music.stop();
-					// FlxG.switchState(new PlayState());
+					// FlxG.switchState(() -> new PlayState());
 			}
 		}
 		// better streaming of shit
@@ -1652,7 +1652,7 @@ class PlayState extends MusicBeatState
 
 				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
-				// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+				// FlxG.switchState(() -> new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 				#if DISCORD_ALLOWED
 				// Game Over doesn't get his own variable because it's only used here
@@ -1838,7 +1838,7 @@ class PlayState extends MusicBeatState
 				transIn = FlxTransitionableState.defaultTransIn;
 				transOut = FlxTransitionableState.defaultTransOut;
 
-				FlxG.switchState(new StoryMenuState());
+				FlxG.switchState(() -> new StoryMenuState());
 
 				StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
 				Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
@@ -1892,7 +1892,7 @@ class PlayState extends MusicBeatState
 		else
 		{
 			trace('WENT BACK TO FREEPLAY??');
-			FlxG.switchState(new FreeplayState());
+			FlxG.switchState(() -> new FreeplayState());
 		}
 	}
 

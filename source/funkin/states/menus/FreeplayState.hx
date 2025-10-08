@@ -152,8 +152,7 @@ class FreeplayState extends MusicBeatState
 
 	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
 	{
-		if (songCharacters == null)
-			songCharacters = ['bf'];
+		songCharacters ??= ['bf'];
 
 		var num:Int = 0;
 		for (song in songs)
@@ -203,7 +202,7 @@ class FreeplayState extends MusicBeatState
 		if (controls.BACK)
 		{
 			FlxG.sound.play(Paths.sound("cancelMenu"));
-			FlxG.switchState(new MainMenuState());
+			FlxG.switchState(() -> new MainMenuState());
 		}
 
 		if (accepted)
