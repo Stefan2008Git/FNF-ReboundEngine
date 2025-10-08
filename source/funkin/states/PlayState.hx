@@ -1441,15 +1441,6 @@ class PlayState extends MusicBeatState
 	{
 		FlxG.camera.followLerp = CoolUtil.camLerpShit(0.04);
 
-		#if !debug
-		perfectMode = false;
-		#end
-
-		if (FlxG.keys.justPressed.NINE)
-		{
-			iconP1.swapOldIcon();
-		}
-
 		if (startingSong)
 		{
 			if (startedCountdown)
@@ -1535,14 +1526,30 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
-		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
-
 		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.85)));
 		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, 0.85)));
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
+
+		if (iconP1.angle >= 0) {
+				if (iconP1.angle != 0) {
+					iconP1.angle -= 1;
+				}
+			} else {
+				if (iconP1.angle != 0) {
+					iconP1.angle += 1;
+				}
+			}
+			if (iconP2.angle >= 0) {
+				if (iconP2.angle != 0) {
+					iconP2.angle -= 1;
+				}
+			} else {
+				if (iconP2.angle != 0) {
+				iconP2.angle += 1;
+			}
+		}
 
 		var iconOffset:Int = 26;
 
@@ -1562,8 +1569,6 @@ class PlayState extends MusicBeatState
 		else
 			iconP2.animation.curAnim.curFrame = 0;
 
-		/* if (FlxG.keys.justPressed.NINE)
-			FlxG.switchState(() -> new Charting()); */
 
 		#if debug
 		if (FlxG.keys.justPressed.EIGHT)
@@ -2515,6 +2520,22 @@ class PlayState extends MusicBeatState
 			{
 				FlxG.camera.zoom += 0.015;
 				camHUD.zoom += 0.03;
+			}
+		}
+
+		if (curBeat % gfSpeed == 0) {
+			if (curBeat % (gfSpeed * 2) == 0) {
+				iconP1.scale.set(0.8, 0.8);
+				iconP2.scale.set(1.2, 1.3);
+					
+				iconP1.angle = -15;
+				iconP2.angle = 15;
+			} else {
+				iconP2.scale.set(0.8, 0.8);
+				iconP1.scale.set(1.2, 1.3);
+					
+				iconP2.angle = -15;
+				iconP1.angle = 15;
 			}
 		}
 

@@ -28,11 +28,7 @@ class MainMenuState extends MusicBeatState
 
 	var menuItems:MainMenuList;
 
-	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate', 'options'];
-	#else
-	var optionShit:Array<String> = ['story mode', 'freeplay'];
-	#end
+	var optionShit:Array<String> = ['story mode', 'freeplay', 'options'];
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -63,15 +59,6 @@ class MainMenuState extends MusicBeatState
 		bg.antialiasing = true;
 		add(bg);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Rebound Engine v" + engineVersion, 12);
-		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Friday Night Funkin' v" + Application.current.meta.get('version'), 12);
-		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
-
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 
@@ -99,19 +86,26 @@ class MainMenuState extends MusicBeatState
 			FlxFlicker.flicker(magenta, 1.1, 0.15, false, true);
 		});
 		menuItems.enabled = false;
+
 		menuItems.createItem(null, null, "story mode", function()
 		{
 			startExitState(new StoryMenuState());
 		});
+
 		menuItems.createItem(null, null, "freeplay", function()
 		{
 			startExitState(new FreeplayState());
 		});
-			menuItems.createItem(null, null, "donate", selectDonate, true);
+			
 		menuItems.createItem(0, 0, "options", function()
 		{
 			startExitState(new OptionsState());
 		});
+
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Rebound Engine v" + engineVersion + "Friday Night Funkin' v" + Application.current.meta.get('version'), 12);
+		versionShit.scrollFactor.set();
+		versionShit.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(versionShit);
 
 		var pos:Float = (FlxG.height - 160 * (menuItems.length - 1)) / 2;
 		for (i in 0...menuItems.length)
@@ -137,15 +131,6 @@ class MainMenuState extends MusicBeatState
 	function onMenuItemChange(item:MenuItem)
 	{
 		camFollow.setPosition(item.getGraphicMidpoint().x, item.getGraphicMidpoint().y);
-	}
-	
-	function selectDonate()
-	{
-		#if linux
-		Sys.command('/usr/bin/xdg-open', ["https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game/", "&"]);
-		#else
-		FlxG.openURL('https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game/');
-		#end
 	}
 
 	function startExitState(nextState:FlxState)
