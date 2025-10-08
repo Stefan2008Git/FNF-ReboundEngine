@@ -2,11 +2,8 @@ package;
 
 import flixel.FlxGame;
 import flixel.FlxState;
-
-import flixel.input.keyboard.FlxKey;
-
+import flixel.input.keyboard.FlxKey
 import lime.graphics.Image;
-
 import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
