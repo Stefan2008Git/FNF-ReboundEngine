@@ -12,7 +12,7 @@ import sys.thread.Thread;
 class DiscordClient
 {
 	public static var isInitialized:Bool = false;
-	private inline static final _defaultID:String = "1059518348196597831";
+	private inline static final _defaultID:String = "1078716722502189106";
 	public static var clientID(default, set):String = _defaultID;
 	private static var presence:DiscordRichPresence = new DiscordRichPresence();
 	@:unreflective private static var __thread:Thread;
@@ -109,8 +109,8 @@ class DiscordClient
 		presence.buttons[0] = button;
 
 		final button2:DiscordButton = new DiscordButton();
-		button2.label = "Stefan's YT";
-		button2.url = "https://www.youtube.com/@stefan2008_official";
+		button2.label = "Sbinator Discord server";
+		button2.url = "https://discord.gg/24HNXrzd7d";
 		presence.buttons[1] = button2;
 		updatePresence();
 	}

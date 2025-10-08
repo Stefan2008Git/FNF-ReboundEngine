@@ -1,37 +1,220 @@
-# This is a basic workflow to help you get started with Actions
+# A main builder and compiler of my game on GitHub actions
+name: Build
 
-name: CI
-
-# Controls when the action will run.
-on: #[push, pull_request]
-
-  # Allows you to run this workflow manually from the Actions tab
+on:
+  push:
+      branches: [main]
   workflow_dispatch:
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  # This workflow contains a single job called "build"
-  buildWindows:
-    runs-on: windows-latest
-    
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@main
 
-      - uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.4
-      # Runs a set of commands using the runners shell
-      - name: Install Haxelib
-        run: |
-          haxelib setup C:/haxelib
-          haxelib install hmm --quiet
-          haxelib run hmm install --quiet
-          haxelib list
-        shell: cmd
-      - name: Compile
-        run: haxelib run lime build windows -D nightly
-      - name: Publish Artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: buildWindows
-          path: export/release/windows/bin
+jobs:
+    Linux:
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v2
+
+        - uses: krdlab/setup-haxe@v2
+          with:
+            haxe-version: 5.0.0-preview.1
+        
+        - name: Restore current build cache for faster compiling
+          uses: actions/cache@v3
+          with:
+            key: cache-build-linux
+            path: |
+              .haxelib/
+              export/release/linux/haxe/
+              export/release/linux/obj/
+            restore-keys: |
+              cache-build-linux
+        
+        - name: Install VLC libs
+          run: |
+            sudo apt-get install libvlc-dev libvlccore-dev
+
+        - name: Install required Haxelib libs
+          run: |
+            haxelib install hmm
+            haxelib run hmm install
+            haxelib run lime rebuild hxcpp
+        
+        - name: Create Version Tag
+          run: echo "${{github.run_id}} > VERSION"
+
+        - name: Compile and build
+          run: haxelib run lime build linux
+
+        - name: Publish main artifacts
+          uses: actions/upload-artifact@v4
+          with:
+            name: ReboundEngine-Linux
+            path: 'export/release/linux/bin'
+
+        - name: Clearing new existing cache
+          uses: actions/github-script@v6
+          with:
+            script: |
+              const caches = await github.rest.actions.getActionsCacheList({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              })
+              for (const cache of caches.data.actions_caches) {
+                if (cache.key == "cache-build-linux") {
+                  console.log('Clearing ' + cache.key + '...')
+                  await github.rest.actions.deleteActionsCacheById({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    cache_id: cache.id,
+                  })
+                  console.log("Cache cleared.")
+                }
+              }
+        - name: Uploading new cache
+          uses: actions/cache@v3
+          with:
+            key: cache-build-linux
+            path: |
+              .haxelib/
+              export/release/linux/haxe/
+              export/release/linux/obj/
+            restore-keys: |
+              cache-build-linux
+
+    MacOS:
+      runs-on: macos-15
+
+      steps:
+        - uses: actions/checkout@v2
+
+        - uses: krdlab/setup-haxe@v2
+          with:
+            haxe-version: 4.3.7
+
+        - name: Restore current build cache for faster compiling
+          uses: actions/cache@v3
+          with:
+            key: cache-build-mac
+            path: |
+              .haxelib/
+              export/release/macos/haxe/
+              export/release/macos/obj/
+            restore-keys: |
+              cache-build-mac
+          
+        - name: Install required Haxelib libs
+          run: |
+            haxelib install hmm
+            haxelib run hmm install
+            haxelib run lime rebuild hxcpp
+            
+        - name: Create version tag
+          run: echo "${{github.run_id}}" > VERSION
+          
+        - name: Compile and build
+          run: haxelib run lime build mac
+          
+        - name: Publish main artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: ReboundEngine-MacOS
+            path: export/release/macos/bin
+        
+        - name: Clearing new existing cache
+          uses: actions/github-script@v6
+          with:
+            script: |
+              const caches = await github.rest.actions.getActionsCacheList({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              })
+              for (const cache of caches.data.actions_caches) {
+                if (cache.key == "cache-build-mac") {
+                  console.log('Clearing ' + cache.key + '...')
+                  await github.rest.actions.deleteActionsCacheById({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    cache_id: cache.id,
+                  })
+                  console.log("Cache cleared.")
+                }
+              }
+
+        - name: Uploading new cache
+          uses: actions/cache@v3
+          with:
+            key: cache-build-mac
+            path: |
+              .haxelib/
+              export/release/macos/haxe/
+              export/release/macos/obj/
+            restore-keys: |
+              cache-build-mac
+
+    Windows:
+      runs-on: windows-latest
+
+      steps:
+        - uses: actions/checkout@v2
+
+        - uses: krdlab/setup-haxe@v2
+          with:
+            haxe-version: 4.3.7
+
+        - name: Restore current build cache for faster compiling
+          uses: actions/cache@v3
+          with:
+            key: cache-build-windows
+            path: |
+              .haxelib/
+              export/release/windows/haxe/
+              export/release/windows/obj/
+            restore-keys: |
+              cache-build-windows
+          
+        - name: Install required Haxelib libs
+          run: |
+            haxelib install hmm
+            haxelib run hmm install
+            haxelib run lime rebuild hxcpp
+          
+        - name: Create version tag
+          run: echo "${{github.run_id}}" > VERSION
+          
+        - name: Compile and build
+          run: haxelib run lime build windows
+          
+        - name: Publish main artifact
+          uses: actions/upload-artifact@v4
+          with:
+            name: ReboundEngine-Windows
+            path: export/release/windows/bin
+        
+        - name: Clearing new existing cache
+          uses: actions/github-script@v6
+          with:
+            script: |
+              const caches = await github.rest.actions.getActionsCacheList({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              })
+              for (const cache of caches.data.actions_caches) {
+                if (cache.key == "cache-build-windows") {
+                  console.log('Clearing ' + cache.key + '...')
+                  await github.rest.actions.deleteActionsCacheById({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    cache_id: cache.id,
+                  })
+                  console.log("Cache cleared.")
+                }
+              }
+        - name: Uploading new cache
+          uses: actions/cache@v3
+          with:
+            key: cache-build-windows
+            path: |
+              .haxelib/
+              export/release/windows/haxe/
+              export/release/windows/obj/
+            restore-keys: |
+              cache-build-windows
