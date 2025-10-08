@@ -1807,13 +1807,7 @@ class PlayState extends MusicBeatState
 			});
 		}
 
-		if (!inCutscene)
-			keyShit();
-
-		#if debug
-		if (FlxG.keys.justPressed.ONE)
-			endSong();
-		#end
+		if (!inCutscene) keyShit();
 	}
 
 	function endSong():Void
@@ -2125,6 +2119,7 @@ class PlayState extends MusicBeatState
 
 	private function keyShit():Void
 	{
+		var missedNotes:Bool = !(PreferencesMenu.getPref('ghostTapping'));
 		var holdingArray:Array<Bool> = [controls.NOTE_LEFT, controls.NOTE_DOWN, controls.NOTE_UP, controls.NOTE_RIGHT];
 		var controlArray:Array<Bool> = [
 			controls.NOTE_LEFT_P,
@@ -2146,6 +2141,8 @@ class PlayState extends MusicBeatState
 			{
 				if (daNote.isSustainNote && daNote.canBeHit && daNote.mustPress && holdingArray[daNote.noteData])
 					goodNoteHit(daNote);
+
+				missedNotes = true;
 			});
 		}
 		if (controlArray.contains(true) && generatedMusic)
@@ -2220,8 +2217,7 @@ class PlayState extends MusicBeatState
 					}
 				}
 			}
-			else
-				badNoteHit();
+			else if (!missedNotes) badNoteHit();
 		}
 		if (boyfriend.holdTimer > 0.004 * Conductor.stepCrochet
 			&& !holdingArray.contains(true)
@@ -2250,6 +2246,7 @@ class PlayState extends MusicBeatState
 
 	function noteMiss(direction:Int = 1):Void
 	{
+		if (PreferencesMenu.getPref('ghostTapping')) return;
 		if (!boyfriend.stunned)
 		{
 			health -= 0.04;

@@ -30,6 +30,7 @@ class PreferencesMenu extends Page
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
+		createPrefItem('Ghost Tapping', 'ghostTapping', true);
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
 		{
@@ -58,6 +59,7 @@ class PreferencesMenu extends Page
 		preferenceCheck('fps-counter', true);
 		preferenceCheck('auto-pause', false);
 		preferenceCheck('master-volume', 1);
+		preferenceCheck('ghostTapping', true);
 		if (!getPref('fps-counter'))
 		{
 			Lib.current.stage.removeChild(Main.fpsCounter);
@@ -70,11 +72,11 @@ class PreferencesMenu extends Page
 		if (preferences.get(identifier) == null)
 		{
 			preferences.set(identifier, defaultValue);
-			trace('set preference!');
+			trace('Set a new option!');
 		}
 		else
 		{
-			trace('found preference: ' + Std.string(preferences.get(identifier)));
+			trace('Found a option: ' + Std.string(preferences.get(identifier)));
 		}
 	}
 

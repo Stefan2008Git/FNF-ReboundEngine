@@ -68,13 +68,13 @@ class FPSCounter extends TextField
 
 		text = "";
 
-		text += currentFPS + " FPS" + "[" + Std.int((1 / currentFPS) * 1000) + "ms]" + "\n";
+		text += currentFPS + " FPS" + " [" + Std.int((1 / currentFPS) * 1000) + "ms]" + "\n";
 
 		var mem = System.totalMemory;
 		if (mem > peak)
 			peak = mem;
 
-		text += getSizeLabel(System.totalMemory) + '/' + getSizeLabel(peak);
+		text += getSizeLabel(System.totalMemory) + ' / ' + getSizeLabel(peak);
 
 		textColor = 0xFFFFFFFF;
 		if (currentFPS <= FlxG.drawFramerate / 2 && currentFPS >= FlxG.drawFramerate / 3) textColor = FlxColor.YELLOW;

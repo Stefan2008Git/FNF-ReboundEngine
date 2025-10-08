@@ -57,15 +57,16 @@ class OptionsState extends MusicBeatState
 		super.create();
 	}
         override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-                #if mobile
-		if (virtualPad.buttonC.justPressed)
 		{
-			removeVirtualPad();
-			openSubState(new MobileControlsSubState());
-		}
-		#end
+			super.update(elapsed);
+            
+			#if mobile
+			if (virtualPad.buttonC.justPressed)
+			{
+				removeVirtualPad();
+				openSubState(new MobileControlsSubState());
+			}
+			#end
         }
 
 	function addPage(name:PageName, page:Page):Dynamic
