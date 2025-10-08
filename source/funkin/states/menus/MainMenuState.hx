@@ -102,7 +102,7 @@ class MainMenuState extends MusicBeatState
 			startExitState(new OptionsState());
 		});
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Rebound Engine v" + engineVersion + "Friday Night Funkin' v" + Application.current.meta.get('version'), 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 44, 0, "Rebound Engine v" + engineVersion + "\nFriday Night Funkin' v" + Application.current.meta.get('version'), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
