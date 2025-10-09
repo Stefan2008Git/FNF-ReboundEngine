@@ -30,9 +30,9 @@ class CreditsState extends MusicBeatState
     var creditsDesc:FlxText;
     var creditsIcon:FlxSprite;
     var creditsList:Array<Array<String>> = [
-       ['stefan', 'Stefan2008', 'Owner of Rebound #1', '4400bd', 'https://www.youtube.com/@stefan2008_official'],
-       ['maysLastPlays', 'MaysLastPlay', 'Owner of Rebound #2', '1fe1de', 'https://www.youtube.com/@MaysLastPlay'],
-       ['greenColdTea', 'JustX', 'Programmer for Rebound', '2c81b7', 'https://github.com/GreenColdTea'],
+       ['mayslastplay', 'MaysLastPlay', 'Main Owner, Programmer', '1fe1de', 'https://www.youtube.com/@MaysLastPlay'],
+       ['stefan', 'Stefan2008', 'Owner, Programmer', '4400bd', 'https://www.youtube.com/@stefan2008_official'],
+       ['greencoldtea', 'JustX', 'Programmer for Rebound', '2c81b7', 'https://github.com/GreenColdTea'],
     ];
     var creditsGroup:FlxTypedGroup<FlxSprite>;
     var leftArrow:FlxSprite;
