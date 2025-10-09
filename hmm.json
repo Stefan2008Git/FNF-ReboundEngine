@@ -31,11 +31,6 @@
       "version": null
     },
     {
-      "name": "hxcpp",
-      "type": "haxelib",
-      "version": "4.3.2"
-    },
-    {
       "name": "hxvlc",
       "type": "haxelib",
       "version": null
