@@ -100,12 +100,7 @@ class MainMenuState extends MusicBeatState
 			}
 			
 			buttons.x = FlxG.width / 2;
-			buttons.y = FlxMath.lerp(
-				minY,
-				maxY, 
-				i / (optionShit.length - 1) 
-			);
-			
+			buttons.y = FlxMath.lerp(minY, maxY, i / (optionShit.length - 1));
 			buttons.ID = i;
 		}
 		
