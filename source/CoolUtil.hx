@@ -61,4 +61,27 @@ class CoolUtil
 		lime.app.Application.current.window.alert(message, title);
 		#end
 	}
+
+	public static inline function openURL(url:String)
+    {
+        #if linux
+        var xdgCommand = Sys.command("xdg-open", [url]);
+        if (xdgCommand != 0) xdgCommand = Sys.command("/usr/bin/xdg-open", [url]);
+        #else
+        FlxG.openURL(url);
+        #end
+
+        // trace("URL: " + url);
+    }
+
+	inline public static function colorFromString(color:String):FlxColor
+	{
+		var hideCharacters = ~/[\t\n\r]/;
+		var color:String = hideCharacters.split(color).join('').trim();
+		if(color.startsWith('0x')) color = color.substring(color.length - 6);
+
+		var colorNum:Null<FlxColor> = FlxColor.fromString(color);
+		if(colorNum == null) colorNum = FlxColor.fromString('#$color');
+		return colorNum != null ? colorNum : FlxColor.WHITE;
+	}
 }
