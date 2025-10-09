@@ -25,14 +25,16 @@ class CreditsState extends MusicBeatState
     var title:Alphabet;
     var bottomTitle:Alphabet;
 
-    // Credit stuff (['Your name of icon', 'Actual name of you', 'Your descritpion', 'Your color id', 'Your social media link'])
+    // Credit stuff (['Your name of icon', 'Actual name of you', 'Your descritpion', 'Your color hex id', 'Your social media link'])
     var creditsName:FlxText;
     var creditsDesc:FlxText;
     var creditsIcon:FlxSprite;
     var creditsList:Array<Array<String>> = [
        ['mayslastplay', 'MaysLastPlay', 'Main Owner, Programmer', '1fe1de', 'https://www.youtube.com/@MaysLastPlay'],
-       ['stefan', 'Stefan2008', 'Owner, Programmer', '4400bd', 'https://www.youtube.com/@stefan2008_official'],
+       ['stefan', 'Stefan2008', 'Owner, Programmer, Artist', '4400bd', 'https://www.youtube.com/@stefan2008_official'],
        ['greencoldtea', 'JustX', 'Programmer for Rebound', '2c81b7', 'https://github.com/GreenColdTea'],
+       ['ljeno', 'LJeno', 'Helper for Rebound', 'a8caff', 'https://github.com/2JENO'],
+       ['idklel', 'Idklel01', 'Helper for Rebound', '2806b5', 'https://github.com/Idklel01'],
     ];
     var creditsGroup:FlxTypedGroup<FlxSprite>;
     var currentSelector:Int = 0; // This will select a icon if of mentioned string from credits list. Default it will give MaysLastPlay because id is 0. --Stefan2008
@@ -61,12 +63,11 @@ class CreditsState extends MusicBeatState
 		for (i in 0...creditsList.length)
 		{
             creditsIcon = new FlxSprite(50 + (i * 140), 0).loadGraphic(Paths.image("menus/creditsMenu/credits/" + creditsList[i][0]));
-            creditsIcon.scale.set(0.3, 0.3);
             creditsIcon.x = 510;
             creditsIcon.y = 220;
             creditsIcon.updateHitbox();
-            creditsIcon.ID = i;
             creditsGroup.add(creditsIcon);
+            creditsIcon.ID = i;
 		}
 
 		bottomBG = new FlxSprite(0, FlxG.height - 42).makeGraphic(FlxG.width, 200, 0xFF000000);
@@ -110,29 +111,31 @@ class CreditsState extends MusicBeatState
         textFloater += elapsed;
         creditsName.y = 190 + (Math.sin(textFloater) * 1 ) * 10;
 
-        if (controls.BACK) 
-        {
-            FlxG.mouse.visible = false;
-            FlxG.switchState(() -> new MainMenuState());
-        }
-
+        if (controls.BACK) FlxG.switchState(() -> new MainMenuState());
+        
         creditsGroup.forEach(function(member:FlxSprite)
         {
             var distItem:Int = -1;
 
-            if (FlxG.mouse.overlaps(member))
+            // This motherfucker opens 5 links in same time and causes the insane lag, so i don't really know why doesn't wants to open only 1 link. --Stefan2008
+            if (controls.ACCEPT && (creditsList[currentSelector][4] == null || creditsList[currentSelector][4].length > 4))
             {
                 distItem = member.ID;
                 currentSelector = distItem;
-
-                if (FlxG.mouse.justPressed)
-                {
-                   CoolUtil.openURL(creditsList[currentSelector][4]);
-                }
+                CoolUtil.openURL(creditsList[currentSelector][4]);
             }
         });
 
-        if (controls.UI_LEFT_P) changeTheSelection(-1); else if (controls.UI_RIGHT_P) changeTheSelection(1);
+        if (controls.UI_LEFT_P) 
+        {
+            changeTheSelection(-1);
+            FlxG.sound.play(Paths.sound("scrollMenu"));
+        }
+        else if (controls.UI_RIGHT_P) 
+        {
+            changeTheSelection(1);
+            FlxG.sound.play(Paths.sound("scrollMenu"));
+        }
 
         super.update(elapsed);
     }
