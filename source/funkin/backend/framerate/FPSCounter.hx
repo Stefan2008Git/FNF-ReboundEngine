@@ -1,85 +1,81 @@
 package funkin.backend.framerate;
 
 import flixel.FlxG;
-import openfl.display.Shader;
-import openfl.filters.ShaderFilter;
+import haxe.Timer;
+import lime.graphics.opengl.GL;
+import openfl.events.Event;
+import openfl.display.Sprite;
 import openfl.system.System;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 
-class FPSCounter extends TextField
-{
-	/**
-		The current frame rate, expressed using frames-per-second
-	**/
-	public var currentFPS(default, null):UInt;
+#if sys
+import sys.io.Process;
+#end
 
+class FPSCounter extends Sprite
+{
+	@:noCompletion private var times:Array<Float>;
+	@:noCompletion private var deltaTimeout:Float = 0.0;
 	var peak:UInt = 0;
 
-	@:noCompletion private var cacheCount:Int;
-	@:noCompletion private var currentTime:Float;
-	@:noCompletion private var times:Array<Float>;
+	// Base info
+	var fpsText:CounterField;
+	var fpsField:CounterField;
+	var memoryText:CounterField;
+	var memoryPeakText:CounterField;
 
-	public function new(x:Float = 10, y:Float = 10, color:Int = 0x000000)
+	public function new(x:Float = 10, y:Float = 10)
 	{
 		super();
-
 		this.x = x;
 		this.y = y;
+		
+		fpsText = new CounterField(0, 0, 22, 100, "", "_sans", FlxColor.WHITE);
+		addChild(fpsText);
 
-		currentFPS = 0;
-		selectable = false;
-		mouseEnabled = false;
-		defaultTextFormat = new TextFormat("_sans", #if desktop 12 #else 14 #end, color);
-		text = "FPS: ";
+		fpsField = new CounterField(-30, 9, 13, 100, "", "_sans", FlxColor.WHITE);
+		addChild(fpsField);
 
-		cacheCount = 0;
-		currentTime = 0;
+		memoryText = new CounterField(0, 25, 14, 300, "", "_sans", FlxColor.WHITE);
+		addChild(memoryText);
+
+		memoryPeakText = new CounterField(50, 25, 14, 100, "", "_sans", FlxColor.WHITE);
+		addChild(memoryPeakText);
+
+		visible = PreferencesMenu.getPref("fps-counter");
 		times = [];
-
-		autoSize = LEFT;
-		backgroundColor = 0;
-
-		#if flash
-		addEventListener(Event.ENTER_FRAME, function(e)
-		{
-			var time = Lib.getTimer();
-			__enterFrame(time - currentTime);
-		});
-		#end
-
-		width = 350;
 	}
 
-	// Event Handlers
-	@:noCompletion
-	private #if !flash override #end function __enterFrame(deltaTime:Float):Void
+	private override function __enterFrame(deltaTime:Float)
 	{
-		currentTime += deltaTime;
-		times.push(currentTime);
-
-		while (times[0] < currentTime - 1000)
-		{
-			times.shift();
+		if(!visible) return;
+		
+		final now:Float = Timer.stamp() * 1000;
+		times.push(now);
+		while (times[0] < now - 1000) times.shift();
+		
+		if (deltaTimeout < 50) {
+			deltaTimeout += deltaTime;
+			return;
 		}
+		
+		var framerate:Int = times.length;
+		if (framerate > FlxG.updateFramerate)
+			framerate = FlxG.updateFramerate;
 
-		var currentCount = times.length;
-		currentFPS = Math.round((currentCount + cacheCount));
-
-		text = "";
-
-		text += currentFPS + " FPS" + " [" + Std.int((1 / currentFPS) * 1000) + "ms]" + "\n";
+		fpsText.text = '$framerate';
+		fpsField.x = fpsText.getLineMetrics(0).width + 5;
+		fpsField.text = "FPS" + " [" + Std.int((1 / framerate) * 1000) + "ms]";
 
 		var mem = System.totalMemory;
 		if (mem > peak)
 			peak = mem;
 
-		text += getSizeLabel(System.totalMemory) + ' / ' + getSizeLabel(peak);
+		memoryText.text = getSizeLabel(mem);
+		memoryPeakText.text = " / " + getSizeLabel(peak);
 
-		textColor = 0xFFFFFFFF;
-		if (currentFPS <= FlxG.drawFramerate / 2 && currentFPS >= FlxG.drawFramerate / 3) textColor = FlxColor.YELLOW;
-		else if (currentFPS <= FlxG.drawFramerate / 3 && currentFPS >= FlxG.drawFramerate / 4) textColor = FlxColor.ORANGE;
-		else if (currentFPS < FlxG.drawFramerate * 0.5) textColor = FlxColor.RED;
+		if(framerate < 30 || framerate > 360) fpsText.textColor = FlxColor.RED; else fpsText.textColor = FlxColor.WHITE;
 	}
 
 	final dataTexts = ["B", "KB", "MB", "GB", "TB", "PB"];
@@ -100,5 +96,24 @@ class FPSCounter extends TextField
 			size = Math.round(size);
 
 		return size + " " + dataTexts[data];
+	}
+}
+
+// From FNF': Doido Engine!
+class CounterField extends TextField
+{
+	public function new(x:Float = 0, y:Float = 0, size:Int = 14, width:Float = 0, initText:String = "", font:String = "", color:Int = 0xFFFFFF)
+	{
+		super();
+
+		this.x = x;
+		this.y = y;
+		this.text = initText;
+
+		if(width != 0)
+			this.width = width;
+
+		selectable = false;
+		defaultTextFormat = new TextFormat(font, size, color);
 	}
 }

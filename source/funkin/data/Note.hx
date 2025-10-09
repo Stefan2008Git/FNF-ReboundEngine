@@ -26,7 +26,7 @@ class Note extends FlxSprite
 
 	var colorSwap:ColorSwap;
 	
-	public static var swagWidth:Float = 160 * 0.7;
+	public static var swagWidth:Float = 163 * 0.7;
 	public static var arrowColors = [1, 1, 1, 1];
 	public static var PURP_NOTE:Int = 0;
 	public static var GREEN_NOTE:Int = 2;
@@ -43,9 +43,9 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 
-		x += 50;
+		x += 90;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
-		y -= 2000;
+		y -= 1990;
 		this.strumTime = strumTime;
 
 		this.noteData = noteData;

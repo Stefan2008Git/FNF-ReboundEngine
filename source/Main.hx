@@ -91,7 +91,7 @@ class Main extends Sprite
 		var init:FlxGame = new FlxGame(game.width, game.height, Init, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
 		addChild(init);
 
-		fpsCounter = new FPSCounter(10, 3, 0xFFFFFF);
+		fpsCounter = new FPSCounter(5, 3);
 		addChild(fpsCounter);
 
 		FlxG.signals.gameResized.add((w, h) -> {

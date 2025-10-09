@@ -50,8 +50,6 @@ class TitleState extends MusicBeatState
 	var swagShader:ColorSwap;
 	var alphaShader:BuildingShaders;
 
-	/*var needUpdate:Bool = false;
-	public static var newVersion:String = '';*/
 
 	override public function create():Void
 	{
@@ -62,36 +60,10 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-			/*trace('checking for update');
-			var http = new haxe.Http("https://raw.githubusercontent.com/MaysLastPlay10/FNF-PlayEngine/main/gitVersion.txt");
-
-			http.onData = function (data:String)
-			{
-				newVersion = data.split('\n')[0].trim();
-				var curVersion:String = MainMenuState.EngineVer.trim();
-				trace('version online: ' + newVersion + ', your version: ' + curVersion);
-				if(newVersion != curVersion) {
-					trace('versions arent matching!');
-					needUpdate = true;
-				}
-			}
-
-			http.onError = function (error) {
-				trace('error: $error');
-			}
-
-			http.request();*/
-
-		#if FREEPLAY
-		FlxG.switchState(() -> new FreeplayState());
-		#elseif CHARTING
-		FlxG.switchState(() -> new ChartingState());
-		#else
 		new FlxTimer().start(1, function(tmr:FlxTimer)
 		{
 			startIntro();
 		});
-		#end
 	}
 
 	var logoBl:FlxSprite;
@@ -115,14 +87,6 @@ class TitleState extends MusicBeatState
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
 
-			// HAD TO MODIFY SOME BACKEND SHIT
-			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
-			// https://github.com/HaxeFlixel/flixel-addons/pull/348
-
-			// var music:FlxSound = new FlxSound();
-			// music.loadStream(Paths.music('freakyMenu'));
-			// FlxG.sound.list.add(music);
-			// music.play();
 			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
@@ -132,19 +96,14 @@ class TitleState extends MusicBeatState
 		persistentUpdate = true;
 
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		// bg.antialiasing = true;
-		// bg.setGraphicSize(Std.int(bg.width * 0.6));
-		// bg.updateHitbox();
 		add(bg);
 
-		logoBl = new FlxSprite(-150, -100);
+		logoBl = new FlxSprite(-100, -100);
 		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
 		logoBl.antialiasing = true;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
-		// logoBl.screenCenter();
-		// logoBl.color = FlxColor.BLACK;
 		logoBl.shader = swagShader.shader;
 
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
@@ -166,13 +125,7 @@ class TitleState extends MusicBeatState
 		// titleText.screenCenter(X);
 		add(titleText);
 
-		var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
-		logo.screenCenter();
-		logo.antialiasing = true;
-		// add(logo);
-
-		// FlxTween.tween(logoBl, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG});
-		// FlxTween.tween(logo, {y: logoBl.y + 50}, 0.6, {ease: FlxEase.quadInOut, type: PINGPONG, startDelay: 0.1});
+		FlxTween.tween(logoBl, {y: logoBl.y + 50}, 1, {ease: FlxEase.quadInOut, type: PINGPONG});
 
 		credGroup = new FlxGroup();
 		add(credGroup);
@@ -181,10 +134,8 @@ class TitleState extends MusicBeatState
 		blackScreen = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 		credGroup.add(blackScreen);
 
-		credTextShit = new Alphabet(0, 0, "ninjamuffin99\nPhantomArcade\nkawaisprite\nevilsk8er", true);
+		credTextShit = new Alphabet(0, 0, "", true);
 		credTextShit.screenCenter();
-
-		// credTextShit.alignment = CENTER;
 
 		credTextShit.visible = false;
 
@@ -204,8 +155,6 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		else
 			initialized = true;
-
-		// credGroup.add(credTextShit);
 	}
 
 	function getIntroTextShit():Array<Array<String>>
@@ -232,7 +181,6 @@ class TitleState extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
-		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 
@@ -261,18 +209,7 @@ class TitleState extends MusicBeatState
 
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
-			if (FlxG.sound.music != null)
-			{
-				FlxG.sound.music.onComplete = null;
-			}
-
-			#if !switch
-			// If it's Friday according to da clock
-			if (Date.now().getDay() == 5)
-			{
-				// Unlock Friday medal
-			}
-			#end
+			if (FlxG.sound.music != null) FlxG.sound.music.onComplete = null;
 
 			titleText.animation.play('press');
 
@@ -280,16 +217,8 @@ class TitleState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
 			transitioning = true;
-			// FlxG.sound.music.stop();
-
-			// Check if version is outdated
-			if (!OutdatedSubState.leftState)
-			{
-				// TODO: Make a check here or delete this since no NGAPI
-				FlxG.switchState(() -> new MainMenuState());
-			}
-
-			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
+			
+			FlxG.switchState(() -> new MainMenuState());	
 		}
 
 		if (pressedEnter && !skippedIntro && initialized)
@@ -360,49 +289,31 @@ class TitleState extends MusicBeatState
 				switch (i + 1)
 				{
 					case 1:
-						createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
-					// credTextShit.visible = true;
+						createCoolText(['Stefan2008', 'MaysLastPlay', 'JustX']);
 					case 3:
 						addMoreText('present');
-					// credTextShit.text += '\npresent...';
-					// credTextShit.addText();
 					case 4:
 						deleteCoolText();
-					// credTextShit.visible = false;
-					// credTextShit.text = 'In association \nwith';
-					// credTextShit.screenCenter();
 					case 5:
 						createCoolText(['In association', 'with']);
 					case 7:
 						addMoreText('newgrounds');
 						ngSpr.visible = true;
-					// credTextShit.text += '\nNewgrounds';
 					case 8:
 						deleteCoolText();
-						ngSpr.visible = false;
-					// credTextShit.visible = false;
-		
-					// credTextShit.text = 'Shoutouts Tom Fulp';
-					// credTextShit.screenCenter();
+						ngSpr.kill();
 					case 9:
 						createCoolText([curWacky[0]]);
-					// credTextShit.visible = true;
 					case 11:
 						addMoreText(curWacky[1]);
-					// credTextShit.text += '\nlmao';
 					case 12:
 						deleteCoolText();
-					// credTextShit.visible = false;
-					// credTextShit.text = "Friday";
-					// credTextShit.screenCenter();
 					case 13:
 						addMoreText('Friday');
-					// credTextShit.visible = true;
 					case 14:
 						addMoreText('Night');
-					// credTextShit.text += '\nNight';
 					case 15:
-						addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+						addMoreText('Funkin');
 		
 					case 16:
 						skipIntro();

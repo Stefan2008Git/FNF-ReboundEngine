@@ -1302,9 +1302,9 @@ class PlayState extends MusicBeatState
 
 			if (!isStoryMode)
 			{
-				babyArrow.y -= 10;
+				babyArrow.y -= 100;
 				babyArrow.alpha = 0;
-				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
+				FlxTween.tween(babyArrow, {y: babyArrow.y + 100, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
 
 			babyArrow.ID = i;
@@ -1315,7 +1315,7 @@ class PlayState extends MusicBeatState
 			}
 
 			babyArrow.animation.play('static');
-			babyArrow.x += 50;
+			babyArrow.x += 100;
 			babyArrow.x += ((FlxG.width / 2) * player);
 
 			strumLineNotes.add(babyArrow);
@@ -1489,8 +1489,7 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		scoreTxt.text = "Score:" + songScore + ' | Misses: ' + songMisses + ' | Health: ' + Math.round(health * 50) + '%' + ' | Notes Hit: '
-			+ notesHit /*+ ' / ' + maxNotes*/ + ' | Accuracy: ' + truncateFloat(songAccuracy, 2) + '%';
+		scoreTxt.text = "Score:" + songScore + ' / Misses: ' + songMisses + ' / Accuracy: ' + truncateFloat(songAccuracy, 2) + '%';
 
 		if (controls.PAUSE #if mobile || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
 		{
