@@ -1192,11 +1192,6 @@ class PlayState extends MusicBeatState
 					swagNote.x += FlxG.width / 2; // general offset
 				}
 
-				/*songNotes.forEach(function(daNote:Note)
-					{
-						if (!daNote.isSustainNote && daNote.mustPress)
-							maxNotes += 1;
-				});*/
 			}
 		}
 
@@ -1410,17 +1405,14 @@ class PlayState extends MusicBeatState
 
 	function resyncVocals():Void
 	{
-		if (!_exiting)
-		{
-			vocals.pause();
+		vocals.pause();
 
-			FlxG.sound.music.play();
-			Conductor.songPosition = FlxG.sound.music.time + Conductor.offset;
-			if (!vocalsFinished)
-			{
-				vocals.time = Conductor.songPosition;
-				vocals.play();
-			}
+		FlxG.sound.music.play();
+		Conductor.songPosition = FlxG.sound.music.time + Conductor.offset;
+		if (!vocalsFinished)
+		{
+			vocals.time = Conductor.songPosition;
+			vocals.play();
 		}
 	}
 
@@ -1516,14 +1508,14 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-		if (FlxG.keys.justPressed.SEVEN)
+		/*if (FlxG.keys.justPressed.SEVEN)
 		{
 			FlxG.switchState(() -> new ChartingState());
 
 			#if DISCORD_ALLOWED
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
-		}
+		}*/
 
 		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.85)));
 		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, 0.85)));
@@ -1625,7 +1617,7 @@ class PlayState extends MusicBeatState
 		}
 		// better streaming of shit
 
-		if (!inCutscene && !_exiting)
+		if (!inCutscene)
 		{
 			// RESET = Quick Game Over Screen
 			if (controls.RESET)
@@ -1633,13 +1625,6 @@ class PlayState extends MusicBeatState
 				health = 0;
 				trace("RESET = True");
 			}
-
-			// CHEAT = brandon's a pussy
-			// if (controls.CHEAT)
-			// {
-			// 	health += 1;
-			// 	trace("User is cheating!");
-			// }
 
 			if (health <= 0 && !practiceMode)
 			{
@@ -1838,9 +1823,6 @@ class PlayState extends MusicBeatState
 			if (storyPlaylist.length <= 0)
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-
-				transIn = FlxTransitionableState.defaultTransIn;
-				transOut = FlxTransitionableState.defaultTransOut;
 
 				FlxG.switchState(() -> new StoryMenuState());
 

@@ -45,29 +45,31 @@ class OptionsState extends MusicBeatState
 			setPage(Controls);
 		}
 		currentPage.enabled = false;
-                #if mobile addVirtualPad(LEFT_FULL, A_B_C); #end
-
-                #if mobile
+		
+		#if mobile 
+		addVirtualPad(LEFT_FULL, A_B_C);        
 		var xd:FlxText = new FlxText(10, 14, 0, 'Press C to customize your android controls', 16);
 		xd.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		xd.borderSize = 2.4;
 		xd.scrollFactor.set();
 		add(xd);
 		#end
+
 		super.create();
 	}
-        override function update(elapsed:Float)
-		{
-			super.update(elapsed);
+        
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
             
-			#if mobile
-			if (virtualPad.buttonC.justPressed)
-			{
-				removeVirtualPad();
-				openSubState(new MobileControlsSubState());
-			}
-			#end
-        }
+		#if mobile
+		if (virtualPad.buttonC.justPressed)
+		{
+			removeVirtualPad();
+			openSubState(new MobileControlsSubState());
+		}
+		#end
+    }
 
 	function addPage(name:PageName, page:Page):Dynamic
 	{
@@ -91,11 +93,11 @@ class OptionsState extends MusicBeatState
 		}
 	}
 
-	override function finishTransIn()
+	/*override function finishTransIn()
 	{
 		super.finishTransIn();
 		currentPage.enabled = true;
-	}
+	}*/
 
 	function switchPage(name:PageName)
 	{

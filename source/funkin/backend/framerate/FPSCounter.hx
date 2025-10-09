@@ -1,6 +1,7 @@
 package funkin.backend.framerate;
 
 import flixel.FlxG;
+import flixel.util.FlxStringUtil;
 import haxe.Timer;
 import lime.graphics.opengl.GL;
 import openfl.events.Event;
@@ -17,7 +18,6 @@ class FPSCounter extends Sprite
 {
 	@:noCompletion private var times:Array<Float>;
 	@:noCompletion private var deltaTimeout:Float = 0.0;
-	var peak:UInt = 0;
 
 	// Base info
 	var fpsText:CounterField;
@@ -40,7 +40,7 @@ class FPSCounter extends Sprite
 		memoryText = new CounterField(0, 25, 14, 300, "", "_sans", FlxColor.WHITE);
 		addChild(memoryText);
 
-		memoryPeakText = new CounterField(50, 25, 14, 100, "", "_sans", FlxColor.WHITE);
+		memoryPeakText = new CounterField(70, 25, 14, 100, "", "_sans", FlxColor.WHITE);
 		addChild(memoryPeakText);
 
 		visible = PreferencesMenu.getPref("fps-counter");
@@ -68,34 +68,10 @@ class FPSCounter extends Sprite
 		fpsField.x = fpsText.getLineMetrics(0).width + 5;
 		fpsField.text = "FPS" + " [" + Std.int((1 / framerate) * 1000) + "ms]";
 
-		var mem = System.totalMemory;
-		if (mem > peak)
-			peak = mem;
-
-		memoryText.text = getSizeLabel(mem);
-		memoryPeakText.text = " / " + getSizeLabel(peak);
+		memoryText.text = FlxStringUtil.formatBytes(MemoryUtil.currentMemory());
+		memoryPeakText.text = " / " + FlxStringUtil.formatBytes(MemoryUtil.getPeakRamUsage());
 
 		if(framerate < 30 || framerate > 360) fpsText.textColor = FlxColor.RED; else fpsText.textColor = FlxColor.WHITE;
-	}
-
-	final dataTexts = ["B", "KB", "MB", "GB", "TB", "PB"];
-
-	function getSizeLabel(num:UInt):String
-	{
-		var size:Float = num;
-		var data = 0;
-		while (size > 1024 && data < dataTexts.length - 1)
-		{
-			data++;
-			size = size / 1024;
-		}
-
-		size = Math.round(size * 100) / 100;
-
-		if (data <= 2)
-			size = Math.round(size);
-
-		return size + " " + dataTexts[data];
 	}
 }
 

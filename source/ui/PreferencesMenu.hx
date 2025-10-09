@@ -72,11 +72,6 @@ class PreferencesMenu extends Page
 		if (preferences.get(identifier) == null)
 		{
 			preferences.set(identifier, defaultValue);
-			trace('Set a new option!');
-		}
-		else
-		{
-			trace('Found a option: ' + Std.string(preferences.get(identifier)));
 		}
 	}
 
@@ -89,18 +84,10 @@ class PreferencesMenu extends Page
 			{
 				prefToggle(identifier);
 			}
-			else
-			{
-				trace('swag');
-			}
 		});
 		if (Type.typeof(value) == TBool)
 		{
 			createCheckbox(identifier);
-		}
-		else
-		{
-			trace('swag');
 		}
 		trace(Type.typeof(value));
 	}
@@ -118,7 +105,6 @@ class PreferencesMenu extends Page
 		value = !value;
 		preferences.set(identifier, value);
 		checkboxes[items.selectedIndex].daValue = value;
-		trace('toggled? ' + Std.string(preferences.get(identifier)));
 		switch (identifier)
 		{
 			case 'auto-pause':

@@ -35,9 +35,7 @@ class CreditsState extends MusicBeatState
        ['greencoldtea', 'JustX', 'Programmer for Rebound', '2c81b7', 'https://github.com/GreenColdTea'],
     ];
     var creditsGroup:FlxTypedGroup<FlxSprite>;
-    var leftArrow:FlxSprite;
-    var rightArrow:FlxSprite;
-    var currentSelector:Int = 0; // This will select a icon if of mentioned string from credits list. Default it will give Stefan2008 because id is 0. --Stefan2008
+    var currentSelector:Int = 0; // This will select a icon if of mentioned string from credits list. Default it will give MaysLastPlay because id is 0. --Stefan2008
 
     override public function create()
     {
@@ -46,10 +44,9 @@ class CreditsState extends MusicBeatState
 		DiscordClient.changePresence("In Credits Menu", null);
 		#end
 
-        FlxG.mouse.visible = true;
-
-		bg = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE);
+		bg = new FlxSprite(0, 0).loadGraphic(Paths.image("menuDesat"));
 		bg.alpha = 0.8;
+        bg.screenCenter(X);
 		add(bg);
 
 		checker = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 160, 160, true, FlxColor.BLACK, 0x0));
@@ -80,7 +77,7 @@ class CreditsState extends MusicBeatState
         title.scrollFactor.set(0, 0);
         title.antialiasing = true;
         title.screenCenter(X);
-        title.y = FlxG.height - 700;
+        title.y = FlxG.height - 650;
         add(title);
 
 		creditsName = new FlxText(0, 0, FlxG.width, "");
@@ -100,26 +97,6 @@ class CreditsState extends MusicBeatState
         creditsDesc.screenCenter(X);
         creditsDesc.y = FlxG.height - 38;
         add(creditsDesc);
-
-		leftArrow = new FlxSprite();
-		leftArrow.frames = FlxAtlasFrames.fromSparrow("assets/images/creditsMenu/arrows.png", "assets/images/creditsMenu/arrows.xml");
-		leftArrow.screenCenter();
-		leftArrow.animation.addByPrefix('leftIdle', "arrow left", 24);
-		leftArrow.animation.addByPrefix('pressLeft', "arrow push left", 24);
-		leftArrow.x = 50;
-		leftArrow.animation.play('leftIdle');
-		leftArrow.updateHitbox();
-		add(leftArrow);
-
-		rightArrow = new FlxSprite();
-		rightArrow.frames = FlxAtlasFrames.fromSparrow("assets/images/creditsMenu/arrows.png", "assets/images/creditsMenu/arrows.xml");
-		rightArrow.screenCenter();
-		rightArrow.animation.addByPrefix('rightIdle', "arrow right", 24);
-		rightArrow.animation.addByPrefix('pressRight', "arrow push right", 24, false);
-		rightArrow.x += 550;
-		rightArrow.animation.play('rightIdle');
-		rightArrow.updateHitbox();
-		add(rightArrow);
 
         changeTheSelection(0);
         intendedColor = bg.color;
@@ -155,11 +132,7 @@ class CreditsState extends MusicBeatState
             }
         });
 
-        if (FlxG.mouse.overlaps(leftArrow)) {
-            if (FlxG.mouse.justPressed) changeTheSelection(-1);
-        } else if (FlxG.mouse.overlaps(rightArrow)) {
-            if (FlxG.mouse.justPressed) changeTheSelection(1);
-        }
+        if (controls.UI_LEFT_P) changeTheSelection(-1); else if (controls.UI_RIGHT_P) changeTheSelection(1);
 
         super.update(elapsed);
     }
@@ -176,16 +149,11 @@ class CreditsState extends MusicBeatState
             spr.kill();
             spr.updateHitbox();
 
-            leftArrow.animation.play('leftIdle');
-            rightArrow.animation.play('rightIdle');
-
             if (spr.ID == currentSelector)
             {
                 spr.revive();
                 spr.updateHitbox();
                 spr.screenCenter();
-                leftArrow.animation.play("pressLeft");
-                rightArrow.animation.play("pressRight");
             }
             spr.centerOffsets();
         });

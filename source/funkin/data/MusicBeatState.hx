@@ -1,5 +1,6 @@
 package funkin.data;
 
+import flixel.FlxState;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.addons.transition.FlxTransitionableState;
@@ -7,7 +8,7 @@ import flixel.addons.ui.FlxUIState;
 import flixel.math.FlxRect;
 import flixel.util.FlxTimer;
 
-class MusicBeatState extends FlxUIState
+class MusicBeatState extends FlxState
 {
 	private var curStep:Int = 0;
 	private var curBeat:Int = 0;
@@ -114,14 +115,6 @@ class MusicBeatState extends FlxUIState
 		if (mobileControls != null)
 			mobileControls = FlxDestroyUtil.destroy(mobileControls);
 		#end
-	}
-
-	override function create()
-	{
-		if (transIn != null)
-			trace('reg ' + transIn.region);
-
-		super.create();
 	}
 
 	override function update(elapsed:Float)

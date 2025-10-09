@@ -45,7 +45,7 @@ class Note extends FlxSprite
 
 		x += 90;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
-		y -= 1990;
+		y -= 2300;
 		this.strumTime = strumTime;
 
 		this.noteData = noteData;

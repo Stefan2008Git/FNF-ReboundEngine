@@ -9,28 +9,12 @@ import flixel.util.FlxSignal;
 class PlayerSettings
 {
 	static public var numPlayers(default, null) = 0;
-	// static public var numAvatars(default, null) = 0;
 	static public var player1(default, null):PlayerSettings;
 	static public var player2(default, null):PlayerSettings;
-
-	#if (haxe >= "4.0.0")
-	static public final onAvatarAdd = new FlxTypedSignal<PlayerSettings->Void>();
-	static public final onAvatarRemove = new FlxTypedSignal<PlayerSettings->Void>();
-	#else
 	static public var onAvatarAdd = new FlxTypedSignal<PlayerSettings->Void>();
 	static public var onAvatarRemove = new FlxTypedSignal<PlayerSettings->Void>();
-	#end
-
 	public var id(default, null):Int;
-
-	#if (haxe >= "4.0.0")
-	public final controls:Controls;
-	#else
 	public var controls:Controls;
-	#end
-
-	// public var avatar:Player;
-	// public var camera(get, never):PlayCamera;
 
 	function new(id)
 	{
@@ -52,7 +36,6 @@ class PlayerSettings
 			if (keys != null)
 			{
 				setDefault = false;
-				trace('loaded key data: ' + Json.stringify(keys));
 				controls.fromSaveData(keys, Device.Keys);
 			}
 		}
@@ -80,7 +63,6 @@ class PlayerSettings
 			if (buttons != null)
 			{
 				setDefault = false;
-				trace('loaded pad data: ' + Json.stringify(buttons));
 				controls.addGamepadWithSaveData(pad.id, buttons);
 			}
 		}
@@ -117,14 +99,12 @@ class PlayerSettings
 		if (savedata != null)
 		{
 			keydata.keys = savedata;
-			trace('saving key data: ' + Json.stringify(savedata));
 		}
 		if (controls.gamepadsAdded.length > 0)
 		{
 			savedata = this.controls.createSaveData(Device.Gamepad(controls.gamepadsAdded[0]));
 			if (savedata != null)
 			{
-				trace('saving pad data: ' + Json.stringify(savedata));
 				keydata.pad = savedata;
 			}
 		}
