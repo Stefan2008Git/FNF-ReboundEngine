@@ -106,8 +106,6 @@ class MainMenuState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-        #if mobile addVirtualPad(UP_DOWN, A_B); #end
-
 		changeSelection();
 
 		super.create();

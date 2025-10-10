@@ -122,17 +122,7 @@ class FreeplayState extends MusicBeatState
 		changeSelection();
 		changeDiff();
 
-		// FlxG.sound.playMusic(Paths.music('title'), 0);
-		// FlxG.sound.music.fadeIn(2, 0, 0.8);
-		selector = new FlxText();
-
-		selector.size = 40;
-		selector.text = ">";
-		// add(selector);
-
 		var swag:Alphabet = new Alphabet(1, 0, "swag");
-
-        #if mobile addVirtualPad(LEFT_FULL, A_B); #end
 
 		super.create();
 	}

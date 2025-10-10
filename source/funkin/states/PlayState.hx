@@ -3,8 +3,6 @@ package funkin.states;
 import flixel.group.FlxSpriteGroup;
 import animate.FlxAnimate;
 import ui.PreferencesMenu;
-import Section.SwagSection;
-import Song.SwagSong;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -775,11 +773,6 @@ class PlayState extends MusicBeatState
 		strumNotes.cameras = [camHUD];
 		hudElements.cameras = [camHUD];
 
-		#if mobile
-		addMobileControls(false);
-		mobileControls.visible = false;
-		#end
-
 		startingSong = true;
 
 		if (isStoryMode && !seenCutscene)
@@ -969,10 +962,6 @@ class PlayState extends MusicBeatState
 
 	function startCountdown():Void
 	{
-		#if mobile
-		mobileControls.visible = true;
-		#end
-
 		inCutscene = false;
 		camHUD.visible = true;
 		generateStaticArrows(0);
@@ -1483,7 +1472,7 @@ class PlayState extends MusicBeatState
 
 		scoreTxt.text = "Score:" + songScore + ' / Misses: ' + songMisses + ' / Accuracy: ' + truncateFloat(songAccuracy, 2) + '%';
 
-		if (controls.PAUSE #if mobile || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
+		if (controls.PAUSE && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
@@ -1801,9 +1790,6 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
-		#if mobile
-		mobileControls.visible = false;
-		#end
 
 		seenCutscene = false;
 		deathCounter = 0;
