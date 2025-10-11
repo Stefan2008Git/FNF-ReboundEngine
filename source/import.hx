@@ -1,10 +1,6 @@
 #if !macro
 // Flixel
-#if (flixel >= '5.3.0')
-import flixel.sound.FlxSound;
-#else
-import flixel.system.FlxSound;
-#end
+
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxCamera;
@@ -21,9 +17,16 @@ import flixel.input.actions.FlxActionInput;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxColor;
 
+// Controls
+import funkin.backend.controls.Controls;
+import funkin.backend.controls.Controls.Device;
+import funkin.backend.controls.Controls.KeyboardScheme;
+
+// Discord
+import funkin.backend.data.Discord.DiscordClient;
+
 // Others
 import funkin.backend.*;
-import funkin.backend.controls.*;
 import funkin.backend.data.*;
 import funkin.backend.objects.*;
 import funkin.backend.framerate.*;

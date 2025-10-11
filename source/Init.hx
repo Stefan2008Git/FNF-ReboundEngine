@@ -1,10 +1,7 @@
 package;
 
-import flixel.FlxG;
 import flixel.FlxState;
-
 import lime.app.Application;
-
 import ui.PreferencesMenu; 
 
 class Init extends FlxState

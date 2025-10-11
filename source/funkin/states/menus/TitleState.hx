@@ -1,11 +1,9 @@
 package funkin.states.menus;
 
-import openfl.display.Sprite;
-import openfl.net.NetStream;
 #if sys 
 import sys.thread.Thread; 
 #end 
-import flixel.FlxSprite;
+
 import flixel.FlxState;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
@@ -27,6 +25,7 @@ import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
 import openfl.Lib;
+import openfl.display.Sprite;
 
 using StringTools;
 
@@ -48,7 +47,6 @@ class TitleState extends MusicBeatState
 
 	var swagShader:ColorSwap;
 	var alphaShader:BuildingShaders;
-
 
 	override public function create():Void
 	{
