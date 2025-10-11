@@ -260,7 +260,7 @@ class WindowsMemoryAPI {
         #end
     }
 
-    public static function getAvailableSystemMemory():Float {
+    /*public static function getAvailableSystemMemory():Float {
         #if cpp
         var result:Float = -1.0;
         untyped __cpp__('
@@ -274,7 +274,7 @@ class WindowsMemoryAPI {
         #else
         return -1;
         #end
-    }
+    }*/
 }
 #end
 
