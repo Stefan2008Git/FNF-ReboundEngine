@@ -178,7 +178,7 @@ class MemoryUtil {
         #end
     }
 
-    /*public static function getAvailableSystemMemory():Float {
+    public static function getAvailableSystemMemory():Float {
         #if windows
         return WindowsMemoryAPI.getAvailableSystemMemory();
         #elseif linux
@@ -214,7 +214,7 @@ class MemoryUtil {
         #else
         return -1;
         #end
-    }*/
+    }
 }
 
 //С++ MY BELOVED <3
@@ -222,7 +222,7 @@ class MemoryUtil {
 @:buildXml("
 <target id='haxe'>
     <lib name='psapi.lib' if='windows'/>
-    <lib name='kernel32.lib' if='windows'/>
+    <lib name='kernel32.lib' if='windows || mac || linux || android || ios'/>
 </target>
 ")
 @:headerCode('
