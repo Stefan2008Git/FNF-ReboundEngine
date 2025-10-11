@@ -5,7 +5,7 @@ import lime.utils.Assets;
 
 using StringTools;
 
-class CoolUtil
+final class CoolUtil
 {
 	public static var difficultyArray:Array<String> = ['EASY', "NORMAL", "HARD"];
 
