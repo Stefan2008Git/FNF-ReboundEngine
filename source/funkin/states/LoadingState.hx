@@ -30,7 +30,7 @@ class LoadingState extends MusicBeatState
 	var funkay:FlxSprite;
 	var loadBar:FlxSprite;
 
-	public static var MIN_TIME = 1;
+	public static final MIN_TIME = 1;
 	
 	function new(target:FlxState, stopMusic:Bool)
 	{
