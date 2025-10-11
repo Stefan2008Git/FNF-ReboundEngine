@@ -17,17 +17,22 @@ import flixel.input.actions.FlxActionInput;
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxColor;
 
-// Controls
+// Important classes that cannot be used just like others
+import funkin.backend.Conductor.BPMChangeEvent;
 import funkin.backend.controls.Controls;
 import funkin.backend.controls.Controls.Device;
 import funkin.backend.controls.Controls.KeyboardScheme;
-
-// Discord
 import funkin.backend.data.Discord.DiscordClient;
+import funkin.backend.data.Section.SwagSection;
+import funkin.backend.data.Song.SwagSong;
 
 // Others
 import funkin.backend.*;
+import funkin.backend.controls.*;
 import funkin.backend.data.*;
+import funkin.backend.data.characters.*;
+import funkin.backend.data.shaders.*;
+import funkin.backend.data.stages.*;
 import funkin.backend.objects.*;
 import funkin.backend.framerate.*;
 
